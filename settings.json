@@ -1,0 +1,44 @@
+{
+  "bot-account": {
+    "username": "AFKBot",
+    "password": "",
+    "type": "mojang"
+  },
+
+  "server": {
+    "ip": "7btxd.aternos.me",
+    "port": 51399,
+    "version": "1.12.1"
+  },
+
+  "position": {
+    "enabled": false,
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+
+  "utils": {
+    "auto-auth": {
+      "enabled": false,
+      "password": ""
+    },
+
+    "anti-afk": {
+      "enabled": true,
+      "sneak": true
+    },
+
+    "chat-messages": {
+      "enabled": false,
+      "repeat": true,
+      "repeat-delay": 3000,
+
+      "messages": []
+    },
+
+    "chat-log": false,
+    "auto-reconnect": true,
+    "auto-reconnect-delay": 15000
+  }
+}
