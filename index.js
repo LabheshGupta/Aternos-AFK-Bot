@@ -123,12 +123,49 @@ function createBot() {
          }
       }
 
-      // Left click every 30 seconds
-      console.log('[INFO] Started auto-click module - left clicking every 30 seconds');
+      // Store original position for movement
+      const originalPosition = { x: bot.entity.position.x, z: bot.entity.position.z };
+      
+      console.log('[INFO] Started anti-idle system: auto-click every 30s, movement every 60s, logs every 30min');
+      
+      // Movement variables
+      let isMovingForward = true;
+      let movementSteps = 0;
+      
+      // Auto-click every 30 seconds (silent)
+      let clickCount = 0;
       setInterval(() => {
          bot.swingArm();
-         console.log('[Auto-Click] Performed left click');
+         clickCount++;
       }, 30000);
+      
+      // Movement every 60 seconds - 2 steps forward, then 2 steps back
+      setInterval(() => {
+         if (isMovingForward && movementSteps < 2) {
+            // Move forward
+            bot.setControlState('forward', true);
+            setTimeout(() => bot.setControlState('forward', false), 500);
+            movementSteps++;
+         } else if (!isMovingForward && movementSteps > 0) {
+            // Move backward
+            bot.setControlState('back', true);
+            setTimeout(() => bot.setControlState('back', false), 500);
+            movementSteps--;
+         }
+         
+         // Switch direction when reaching limits
+         if (isMovingForward && movementSteps >= 2) {
+            isMovingForward = false;
+         } else if (!isMovingForward && movementSteps <= 0) {
+            isMovingForward = true;
+         }
+      }, 60000);
+      
+      // Status log every 30 minutes to save credits
+      setInterval(() => {
+         console.log(`[Status] Bot active - ${clickCount} clicks performed, position: ${Math.round(bot.entity.position.x)}, ${Math.round(bot.entity.position.z)}`);
+         clickCount = 0; // Reset counter
+      }, 1800000);
    });
 
    bot.on('goal_reached', () => {
