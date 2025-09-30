@@ -1,13 +1,13 @@
 {
   "bot-account": {
-    "username": "YourBotUsername",
+    "username": "7bt afk bot",
     "password": "",
     "type": "mojang"
   },
 
   "server": {
-    "ip": "your.server.ip",
-    "port": 25565,
+    "ip": "7btxd.aternos.me",
+    "port": 51399,
     "version": "1.12.2"
   },
   
