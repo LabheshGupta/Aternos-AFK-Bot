@@ -123,48 +123,49 @@ function createBot() {
          }
       }
 
-      // Store original position for movement
-      const originalPosition = { x: bot.entity.position.x, z: bot.entity.position.z };
+      console.log('[INFO] Started enhanced anti-idle system with random movements');
       
-      console.log('[INFO] Started anti-idle system: auto-click every 30s, movement every 60s, logs every 30min');
+      let activityCount = 0;
       
-      // Movement variables
-      let isMovingForward = true;
-      let movementSteps = 0;
-      
-      // Auto-click every 30 seconds (silent)
-      let clickCount = 0;
-      setInterval(() => {
-         bot.swingArm();
-         clickCount++;
-      }, 30000);
-      
-      // Movement every 60 seconds - 2 steps forward, then 2 steps back
-      setInterval(() => {
-         if (isMovingForward && movementSteps < 2) {
-            // Move forward
-            bot.setControlState('forward', true);
-            setTimeout(() => bot.setControlState('forward', false), 500);
-            movementSteps++;
-         } else if (!isMovingForward && movementSteps > 0) {
-            // Move backward
-            bot.setControlState('back', true);
-            setTimeout(() => bot.setControlState('back', false), 500);
-            movementSteps--;
+      // Random movement function
+      function performRandomMovement() {
+         const movements = ['forward', 'back', 'left', 'right'];
+         const randomMove = movements[Math.floor(Math.random() * movements.length)];
+         const duration = Math.floor(Math.random() * 300) + 200; // 200-500ms
+         
+         // Perform movement
+         bot.setControlState(randomMove, true);
+         setTimeout(() => bot.setControlState(randomMove, false), duration);
+         
+         // Random chance to look around
+         if (Math.random() > 0.5) {
+            const yaw = bot.entity.yaw + (Math.random() * Math.PI) - (Math.PI / 2);
+            bot.look(yaw, bot.entity.pitch);
          }
          
-         // Switch direction when reaching limits
-         if (isMovingForward && movementSteps >= 2) {
-            isMovingForward = false;
-         } else if (!isMovingForward && movementSteps <= 0) {
-            isMovingForward = true;
-         }
-      }, 60000);
+         activityCount++;
+         
+         // Schedule next random movement (45-120 seconds)
+         const nextMove = Math.floor(Math.random() * 75000) + 45000;
+         setTimeout(performRandomMovement, nextMove);
+      }
+      
+      // Auto-click at random intervals (25-35 seconds)
+      function performRandomClick() {
+         bot.swingArm();
+         activityCount++;
+         const nextClick = Math.floor(Math.random() * 10000) + 25000;
+         setTimeout(performRandomClick, nextClick);
+      }
+      
+      // Start activities after a short delay
+      setTimeout(performRandomMovement, 10000);
+      setTimeout(performRandomClick, 5000);
       
       // Status log every 30 minutes to save credits
       setInterval(() => {
-         console.log(`[Status] Bot active - ${clickCount} clicks performed, position: ${Math.round(bot.entity.position.x)}, ${Math.round(bot.entity.position.z)}`);
-         clickCount = 0; // Reset counter
+         console.log(`[Status] Bot active - ${activityCount} activities performed`);
+         activityCount = 0;
       }, 1800000);
    });
 
