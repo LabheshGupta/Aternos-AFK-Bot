@@ -162,6 +162,11 @@ function createBot() {
       setTimeout(performRandomMovement, 10000);
       setTimeout(performRandomClick, 5000);
       
+      // Send chat message every 10 minutes
+      setInterval(() => {
+         bot.chat('7bt.xd on discord');
+      }, 600000);
+      
       // Status log every 30 minutes to save credits
       setInterval(() => {
          console.log(`[Status] Bot active - ${activityCount} activities performed`);

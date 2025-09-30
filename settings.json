@@ -1,6 +1,6 @@
 {
   "bot-account": {
-    "username": "7bt OnlineBot",
+    "username": "AFKBot",
     "password": "",
     "type": "mojang"
   },
@@ -39,6 +39,6 @@
 
     "chat-log": false,
     "auto-reconnect": true,
-    "auto-reconnect-delay": 15000
+    "auto-reconnect-delay": 30000
   }
 }
